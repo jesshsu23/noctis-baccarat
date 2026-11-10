@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NOCTIS 設計說明</title>
+<meta name="description" content="NOCTIS 百家樂介面試作：視覺風格、細節處理與資訊辨識度說明">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0c0f;--panel:rgba(255,255,255,.035);--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+  --ink:#e9eef4;--ink-2:#b3bcc8;--ink-3:#8a94a4;
+  --ice:#aee2ff;--ice-2:#6cc4f5;
+  --player:#93ccff;--banker:#ff9e9e;--tie:#90e8c6;
+  --num:'Manrope','Noto Sans TC',system-ui,sans-serif;
+  --body:'Noto Sans TC','Manrope',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.75 var(--body);
+  background-image:radial-gradient(1000px 520px at 50% -120px,rgba(108,196,245,.10),transparent 70%)}
+a{color:var(--ice)}
+img{display:block;max-width:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* hero */
+.hero{padding:72px 0 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.brand{display:inline-flex;align-items:center;gap:10px;font:800 14px/1 var(--num);letter-spacing:.42em;color:var(--ink-2)}
+.brand svg{width:18px;height:18px}
+h1{margin:22px 0 14px;font:800 clamp(34px,5.4vw,54px)/1.12 var(--num);letter-spacing:-.01em}
+h1 span{display:block;font:700 clamp(17px,2.2vw,21px)/1.5 var(--body);color:var(--ink-2);letter-spacing:.02em;margin-top:12px}
+.lede{color:var(--ink-2);max-width:34em;margin:0 0 26px}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;font:700 14px/1 var(--num);letter-spacing:.04em;text-decoration:none;border:1px solid var(--line-2);color:var(--ink);background:var(--panel)}
+.btn.primary{color:#081018;background:linear-gradient(180deg,#d6efff,#9fd4fa);border-color:transparent}
+.hero-shots{position:relative;height:540px}
+.hero-shots img{position:absolute;width:250px;border-radius:30px;box-shadow:0 30px 70px -20px rgba(0,0,0,.85),0 0 0 1px var(--line)}
+.hero-shots img:first-child{left:0;top:0}
+.hero-shots img:last-child{right:0;top:56px}
+
+/* sections */
+section{padding:56px 0;border-top:1px solid var(--line)}
+.eyebrow{font:800 12px/1 var(--num);letter-spacing:.24em;color:var(--ice-2)}
+h2{margin:12px 0 18px;font:700 clamp(24px,3.2vw,30px)/1.35 var(--body)}
+h3{margin:0 0 6px;font:700 17px/1.45 var(--body)}
+p{margin:0 0 14px}
+.muted{color:var(--ink-2)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+.card{padding:20px;border-radius:18px;background:var(--panel);border:1px solid var(--line)}
+.card p{color:var(--ink-2);font-size:15px;margin:0}
+.kw{font:800 12px/1 var(--num);letter-spacing:.16em;color:var(--ice);margin-bottom:10px}
+
+/* palette */
+.palette{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:24px}
+.sw{border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+.sw i{display:block;height:64px}
+.sw div{padding:10px 12px;font-size:13px;line-height:1.4}
+.sw b{display:block;font:700 13px/1.3 var(--body)}
+.sw code{font:600 12px/1 var(--num);color:var(--ink-3)}
+
+/* details */
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin-top:36px}
+.detail:nth-of-type(even) .shot{order:2}
+.shot{border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 50px -24px rgba(0,0,0,.8)}
+.detail ul{margin:10px 0 0;padding-left:1.1em;color:var(--ink-2);font-size:15px}
+.detail li{margin:4px 0}
+.detail li b{color:var(--ink);font-weight:700}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:26px}
+.flow figure{margin:0}
+.flow img{border-radius:20px;box-shadow:0 0 0 1px var(--line)}
+.flow figcaption{margin-top:10px;font-size:14px;line-height:1.5;color:var(--ink-2)}
+.flow figcaption b{display:block;color:var(--ink);font:800 12px/1.6 var(--num);letter-spacing:.12em}
+
+/* table */
+table{width:100%;border-collapse:collapse;margin-top:22px;font-size:15px}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 13px/1.4 var(--body);color:var(--ink-3);white-space:nowrap}
+td:first-child{font-weight:700;white-space:nowrap}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:1px}
+
+footer{padding:40px 0 64px;border-top:1px solid var(--line);color:var(--ink-3);font-size:14px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;padding-top:48px}
+  .hero-shots{height:440px;max-width:460px}
+  .hero-shots img{width:200px}
+  .cols{grid-template-columns:1fr}
+  .palette{grid-template-columns:repeat(3,1fr)}
+  .detail{grid-template-columns:1fr;gap:18px}
+  .detail:nth-of-type(even) .shot{order:0}
+  .flow{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:64%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+  .flow figure{scroll-snap-align:start}
+}
+@media (max-width:420px){
+  .hero-shots{height:360px}
+  .hero-shots img{width:165px;border-radius:22px}
+  td,th{padding:10px 6px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div>
+      <div class="brand">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5 4 12h8z" fill="#f2f9ff"/><path d="M12 1.5 20 12h-8z" fill="#a9d6fb"/><path d="M4 12l8 10.5V12z" fill="#5d9fd8"/><path d="M20 12l-8 10.5V12z" fill="#2f6aa8"/><path d="M12 1.5 20 12 12 22.5 4 12z" fill="none" stroke="rgba(255,255,255,.7)" stroke-width=".8" stroke-linejoin="round"/></svg>
+        NOCTIS
+      </div>
+      <h1>百家樂介面試作<span>煙燻玻璃俱樂部：深夜、冰光、磨砂壓克力</span></h1>
+      <p class="lede">一款手機版真人百家樂介面。以石墨黑與冰藍為基調，用半透明煙燻玻璃面板疊在真人荷官畫面上，籌碼做成磨砂壓克力材質，營造深夜會員制俱樂部的質感與娛樂感。</p>
+      <div class="cta">
+        <a class="btn primary" href="../">開啟互動 Demo</a>
+        <a class="btn" href="https://github.com/jesshsu23/noctis-baccarat">GitHub 原始碼</a>
+      </div>
+    </div>
+    <div class="hero-shots" aria-hidden="true">
+      <img src="img/01-betting.jpg" alt="">
+      <img src="img/03-bigwin.jpg" alt="">
+    </div>
+  </header>
+
+  <!-- 1 -->
+  <section>
+    <div class="eyebrow">01 · CONCEPT</div>
+    <h2>整體視覺風格與概念</h2>
+    <p class="muted">品牌名 <b style="color:var(--ink)">NOCTIS</b> 取自拉丁文的「夜」。想像一間只在深夜營業的會員制俱樂部：燈光壓低、桌面是霧面玻璃、籌碼是冰涼的壓克力。整體走「暗色玻璃擬態（dark glassmorphism）」，但刻意壓低彩度與光暈，只讓真正重要的資訊發光。</p>
+    <div class="cols">
+      <div class="card"><div class="kw">SMOKED GLASS</div><h3>煙燻玻璃</h3><p>所有面板都是半透明深色玻璃：背景模糊、細微雜訊顆粒、上緣一道反光、邊框由上到下漸層，讓荷官畫面的色光透進介面。</p></div>
+      <div class="card"><div class="kw">ICE LIGHT</div><h3>冰藍光</h3><p>冰藍是唯一的品牌強調色，用在倒數光圈、選取狀態、餘額跳動與贏錢時刻，像冰塊折射的冷光。</p></div>
+      <div class="card"><div class="kw">FROSTED ACRYLIC</div><h3>磨砂壓克力</h3><p>籌碼是半透明的壓克力圓片，有邊緣刻痕、厚度與高光。押注後在下注區疊成一柱，越押越高。</p></div>
+    </div>
+    <div class="palette">
+      <div class="sw"><i style="background:#0d0e11"></i><div><b>石墨黑</b><code>#0D0E11</code></div></div>
+      <div class="sw"><i style="background:linear-gradient(135deg,#aee2ff,#6cc4f5)"></i><div><b>冰藍</b><code>#AEE2FF</code></div></div>
+      <div class="sw"><i style="background:#93ccff"></i><div><b>閒 Player</b><code>#93CCFF</code></div></div>
+      <div class="sw"><i style="background:#ff9e9e"></i><div><b>莊 Banker</b><code>#FF9E9E</code></div></div>
+      <div class="sw"><i style="background:#90e8c6"></i><div><b>和 Tie</b><code>#90E8C6</code></div></div>
+      <div class="sw"><i style="background:#e9eef4"></i><div><b>文字</b><code>#E9EEF4</code></div></div>
+    </div>
+    <p class="muted" style="margin-top:18px;font-size:15px">字體：數字與英文用 Manrope（幾何、粗體、等寬數字），中文用 Noto Sans TC。</p>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="eyebrow">02 · DETAILS</div>
+    <h2>特別著重處理的視覺細節</h2>
+
+    <div class="detail">
+      <div class="shot"><img src="img/d-header-video.jpg" alt="NOCTIS 字標、真人畫面與疊在畫面上的倒數光圈" loading="lazy"></div>
+      <div>
+        <h3>字標與真人畫面上的倒數</h3>
+        <ul>
+          <li><b>NOCTIS 字標</b>：四面切割的冰晶鑽石，切面由亮到暗表現折射；字母間距拉寬，白色漸層到冰藍。</li>
+          <li><b>日蝕倒數</b>：直接疊在荷官畫面上，80% 深色圓盤配外圈光環，光環隨秒數遞減。最後 5 秒轉為珊瑚紅並輕微脈動；開獎後顯示「3 : 9」比分，光環換成贏家顏色。</li>
+          <li><b>無縫銜接</b>：影片底部漸層與頁面底色完全相同，畫面像是從桌面延伸出來，沒有斷層。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="detail">
+      <div class="shot"><img src="img/d-zones.jpg" alt="下注區：壓克力籌碼疊高、全桌下注人數與比例條" loading="lazy"></div>
+      <div>
+        <h3>下注區與壓克力籌碼</h3>
+        <ul>
+          <li><b>籌碼疊高</b>：金額依面額拆解，大面額在下，最多疊 6 枚。每枚有側邊厚度、白色條紋與落下動畫。</li>
+          <li><b>玻璃邊光</b>：每個下注區的邊框與底部光暈帶著區域色；押注後光暈加強，一眼看出押在哪。</li>
+          <li><b>全桌下注分佈</b>：頂端顯示人數與總額，底部細條顯示該區佔全桌的比例，倒數中持續增加，營造人氣。</li>
+          <li><b>單邊限制</b>：押了莊，閒家區就變暗並顯示鎖頭提示，反之亦然。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="detail">
+      <div class="shot"><img src="img/d-bigwin.jpg" alt="BIG WIN 慶祝卡片" loading="lazy"></div>
+      <div>
+        <h3>贏錢的高潮時刻</h3>
+        <ul>
+          <li><b>慶祝卡片</b>：畫面壓暗、冰藍光芒旋轉，兩道光圈擴散、冰晶碎片飛散，再彈出煙燻玻璃卡片。</li>
+          <li><b>標題與金額</b>：標題從模糊收合，再有一道光掃過；金額從 0 跳到實際數字。淨贏 5,000 以上升級為 BIG WIN。</li>
+          <li><b>結算</b>：贏的下注區掃光、浮出「+5,700」，籌碼一枚枚飛回餘額，餘額同步跳動；輸的籌碼往荷官方向滑走淡出。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="eyebrow">03 · CLARITY</div>
+    <h2>如何兼顧畫面質感與遊戲資訊辨識度</h2>
+    <p class="muted">原則是：<b style="color:var(--ink)">玻璃只當背景層，資訊永遠在最上層、最清楚。</b>質感來自材質與光，而不是讓文字變淡或變花。</p>
+    <table>
+      <thead><tr><th>做法</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td>三色貫穿全局</td><td><span class="dot" style="background:var(--banker)"></span>莊紅、<span class="dot" style="background:var(--player)"></span>閒藍、<span class="dot" style="background:var(--tie)"></span>和綠，一致用在下注區、點數、倒數光環、路紙與慶祝卡片。玩家不用讀字也知道是哪一方。</td></tr>
+        <tr><td>清楚的層級</td><td>閒、和、莊三個主下注區最大最亮；對子邊注次之；籌碼與操作鈕在拇指可及的下半部；路紙放最下方給需要的人看。</td></tr>
+        <tr><td>數字優先</td><td>倒數、點數、金額、賠率一律用粗體等寬數字（Manrope 800），跳動時不會左右晃動。</td></tr>
+        <tr><td>對比有底線</td><td>玻璃面板底色保留足夠深度，主要文字為近白色，次要文字也維持可讀對比；光暈只加在邊框與狀態上，不疊在文字後面。</td></tr>
+        <tr><td>狀態用光說話</td><td>下注中為冰藍、最後 5 秒為珊瑚紅、開獎為贏家色；押注區變亮、禁押區變暗、贏的區掃光。顏色與亮度就是狀態提示。</td></tr>
+        <tr><td>動畫有目的</td><td>每段動畫都在交代「錢去了哪裡」：籌碼飛到下注區、贏的籌碼飛回餘額、輸的籌碼滑向荷官。系統設定「減少動態」時會自動簡化。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <div class="eyebrow">04 · ROUND FLOW</div>
+    <h2>一局的畫面流程</h2>
+    <p class="muted">Demo 會自動下注並跑完整局；第一局固定為莊家天牌勝，打開即可看到 BIG WIN。</p>
+    <div class="flow">
+      <figure><img src="img/01-betting.jpg" alt="下注中" loading="lazy"><figcaption><b>01 BETTING</b>15 秒倒數，籌碼飛上桌疊高</figcaption></figure>
+      <figure><img src="img/02-result.jpg" alt="開牌結果" loading="lazy"><figcaption><b>02 RESULT</b>翻牌、點數與比分顯示於光圈</figcaption></figure>
+      <figure><img src="img/03-bigwin.jpg" alt="BIG WIN" loading="lazy"><figcaption><b>03 BIG WIN</b>贏錢的高潮時刻</figcaption></figure>
+      <figure><img src="img/04-settle.jpg" alt="結算" loading="lazy"><figcaption><b>04 SETTLE</b>籌碼飛回餘額、金額跳動</figcaption></figure>
+      <figure><img src="img/05-lower.jpg" alt="路紙與操作區" loading="lazy"><figcaption><b>05 ROADMAP</b>路紙統計、對子標記與問路</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="eyebrow">05 · BUILD</div>
+    <h2>規格與實作</h2>
+    <table>
+      <tbody>
+        <tr><td>平台</td><td>手機直式（寬 430px 以內）；桌機瀏覽時以手機外框呈現。</td></tr>
+        <tr><td>技術</td><td>單一 HTML / CSS / JavaScript 檔，無框架。玻璃效果使用 backdrop-filter，動畫使用 CSS 與 Web Animations API。</td></tr>
+        <tr><td>規則</td><td>標準百家樂補牌規則；閒 1:1、莊 0.95:1、和 8:1、對子 11:1；開和局退回莊閒本金；同局不可同時押莊與閒；每局上限 10,000。</td></tr>
+        <tr><td>Demo</td><td>自動下注展示模式，四組下注組合輪流；全桌人數與金額為模擬資料。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>NOCTIS · Baccarat UI 試作 · <a href="../">開啟 Demo</a></footer>
+</div>
+</body>
+</html>
